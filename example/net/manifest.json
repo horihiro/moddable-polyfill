@@ -1,0 +1,12 @@
+{
+  "include": [
+    "../../all/net/manifest_net.json",
+  ],
+  "modules": {
+    "*": [
+      "./main",
+      "../../all/net/fetch",
+      "../../all/net/URL",
+    ],
+  },
+}

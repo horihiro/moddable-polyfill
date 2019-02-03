@@ -1,0 +1,23 @@
+{
+  "include": [
+    "$(MODDABLE)/examples/manifest_base.json",
+		"$(MODDABLE)/examples/manifest_net.json",
+    "$(MODDABLE)/modules/crypt/tls.json"
+  ],
+  "modules": {
+		"*": [
+	    "./fetch",
+      "./URL",
+  		"$(MODULES)/network/http/*"
+		]
+	},
+	"resources":{
+		"*": [
+			"$(MODULES)/crypt/data/ca109",
+			"$(MODULES)/crypt/data/ca106",
+		]
+  },
+	"preload": [
+		"http"
+  ],
+}

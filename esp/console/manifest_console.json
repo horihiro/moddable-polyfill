@@ -1,0 +1,30 @@
+{
+  "include": [
+    "$(MODDABLE)/examples/manifest_base.json",
+  ],
+  "platforms": {
+    "esp": {
+      "modules": {
+        "*": [
+          "./console",
+        ],
+      },
+    },
+    "esp32": {
+      "modules": {
+        "*": [
+          "./console",
+        ],
+      }
+    },
+    "win": {
+      "error": "module `globals` is not supported on this platform"
+    },
+    "mac": {
+      "error": "module `globals` is not supported on this platform"
+    },
+    "lin": {
+      "error": "module `globals` is not supported on this platform"
+    }
+  },
+}

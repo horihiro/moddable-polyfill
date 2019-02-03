@@ -1,0 +1,33 @@
+{
+  "include": [
+    "$(MODDABLE)/examples/manifest_base.json",
+    "./all/net/manifest_net.json",
+    "./all/timer/manifest_timer.json",
+    "./esp/console/manifest_console.json",
+  ],
+  "platforms": {
+    "esp": {
+      "modules": {
+        "*": [
+          "./polyfill",
+        ],
+      },
+    },
+    "esp32": {
+      "modules": {
+        "*": [
+          "./polyfill",
+        ],
+      }
+    },
+    "win": {
+      "error": "module `polyfill` is not supported on this platform"
+    },
+    "mac": {
+      "error": "module `polyfill` is not supported on this platform"
+    },
+    "lin": {
+      "error": "module `polyfill` is not supported on this platform"
+    }
+  },
+}
