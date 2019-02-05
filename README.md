@@ -70,7 +70,7 @@ example.js
 import {} from 'fetch'; // import as global module.
 
 fetch('https://example.com')
-.then(r => json())   // if you want to get response as text, call r.text()
+.then(r => r.json())   // if you want to get response as text, call r.text()
 .then(j => trace(j)) // JSON
 .catch(err => trace(err));
 ```
