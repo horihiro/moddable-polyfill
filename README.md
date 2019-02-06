@@ -4,6 +4,8 @@ polyfill libraries for [Moddable SDK](https://github.com/Moddable-OpenSource/mod
 ## net
 ### WHATWG URL
 
+**Note:** If you build it for esp8266, [the attached file](https://github.com/Moddable-OpenSource/moddable/issues/119#issuecomment-460435291) should be used.
+
 manifest.json to use `URL`
 ```json
 {
@@ -71,7 +73,7 @@ import {} from 'fetch'; // import as global module.
 
 fetch('https://example.com')
 .then(r => r.json())   // if you want to get response as text, call r.text()
-.then(j => trace(j)) // JSON
+.then(j => trace(j))   // JSON
 .catch(err => trace(err));
 ```
 
@@ -105,4 +107,6 @@ setInterval(() => {
 ```
 
 ## Console
+**Note: This is only for esp32/8266. It can't be built for Windows/macOS/Linux.**
+
 TBD
