@@ -11,11 +11,6 @@
       "$(MODULES)/network/http/*"
     ]
   },
-  "resources":{
-    "*": [
-      "$(MODULES)/crypt/data/ca109",
-    ]
-  },
   "preload": [
     "http"
   ],

@@ -2,6 +2,11 @@
   "include": [
     "../../all/net/manifest_net.json",
   ],
+  "resources":{
+    "*": [
+      "$(MODULES)/crypt/data/ca109",
+    ]
+  },
   "modules": {
     "*": [
       "./main",
