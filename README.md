@@ -4,7 +4,7 @@ polyfill libraries for [Moddable SDK](https://github.com/Moddable-OpenSource/mod
 ## net
 ### WHATWG URL
 
-**Note:** If you build it for esp8266, [the attached file](https://github.com/Moddable-OpenSource/moddable/issues/119#issuecomment-460435291) should be used.
+**Note:** If you build it for esp8266, update Moddable SDK to the latest
 
 manifest.json to use `URL`
 ```json
