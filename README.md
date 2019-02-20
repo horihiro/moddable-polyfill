@@ -4,7 +4,7 @@ polyfill libraries for [Moddable SDK](https://github.com/Moddable-OpenSource/mod
 ## net
 ### WHATWG URL
 
-**Note:** If you build it for esp8266, update Moddable SDK to the latest
+**Note:** If you build it for esp8266, **update Moddable SDK to the latest**
 
 manifest.json to use `URL`
 ```json
@@ -107,6 +107,6 @@ setInterval(() => {
 ```
 
 ## Console
-**Note: This is only for esp32/8266. It can't be built for Windows/macOS/Linux.**
+**Note:** This is only for esp32/8266. **It can't be built for Windows/macOS/Linux.**
 
 TBD
