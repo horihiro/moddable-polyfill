@@ -102,12 +102,25 @@ manifest.json to use `setInterval`
 example.js
 ```js
 import {} from 'setInterval';
+import {} from 'clearInterval';
 
 let i = 0;
-setInterval(() => {
+const id = setInterval(() => {
   trace(`${i}\n`);
   i++;
+  if (i === 10) {
+    clearTimeout(id);
+  }
 }, 1000);
+
+```
+
+`setTimeout`, `setImmediate`, `clearTimeout` and `clearImmediate` also are same as `*Interval`.
+
+And all functions can be imported by following code.
+
+```js
+import {} from 'w3c_timer';
 
 ```
 
