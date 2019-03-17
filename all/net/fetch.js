@@ -1,8 +1,6 @@
 import {Request} from "http"
 import SecureSocket from "securesocket";
 import {URL} from 'URL';
-import SNTP from "sntp";
-import Time from "time";
 
 class Response {
   constructor(params) {
