@@ -9,7 +9,6 @@
       "./fetch",
       "./URL",
       "$(MODULES)/network/http/*",
-      "$(MODULES)/network/sntp/*",
     ]
   },
   "preload": [

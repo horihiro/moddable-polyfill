@@ -144,100 +144,67 @@ function fetch(href, options) {
     requestParams.Socket = SecureSocket;
     requestParams.secure = {protocolVersion: 0x303};
   }
-  const fetchMain = (params) => {
-    return new Promise((resolve, reject) => {
-      try {
-        const request = new Request(params);
-        const headers = {};
-        let status = 0;
-        let statusText = '';
-        let bodyUsed = false;
-        let redirected = options && options.redirected ? options.redirected : false;
-          request.callback = function(message, value, etc) {
-            switch(message) {
-            case 1:
-              // response status received with status code
-              status = parseInt(value);
-              statusText = statusTextArray[status];
-              break;
-            case 2:
-              // one header received (name, value)
-              if (value && etc) headers[value.toLowerCase()] = etc;
-              break;
-            case 3:
-              // all headers received
-              break;
-            case 4:
-              // part of response body
-              break;
-            case 5:
-              // all body received
-              const body = value;
-
-              if (300 <= status && status <= 399 && headers['location']) {
-                if (redirect === 'follow') {
-                  const redirectUrl = new URL(headers['location']);
-                  const redirectOptions = options || {};
-                  redirectOptions.redirected = true;
-                  resolve(fetch(redirectUrl.hostname ? headers['location'] : `${url.origin}${headers['location']}`, redirectOptions));
-                  return;
-                } else if (redirect === 'error') {
-                  reject(new TypeError('NetworkError when attempting to fetch resource.'));
-                  return;
-                }
-              }
-              resolve(new Response({
-                href,
-                bodyUsed,
-                redirected,
-                status,
-                statusText,
-                headers,
-                body
-              }));
-              break;
-            case -2:
-              reject('SSL: certificate: auth err');
-              break;
-            default:
-              reject(value);
-            }
-        }
-      } catch (e) {
-        reject(e);
-      }
-    });
-  };
-  const setTime = (hosts) => {
-    return new Promise((resolve, reject) => {
-
-      new SNTP({host: hosts.shift()}, function(message, value) {
-        switch (message) {
+  return new Promise((resolve, reject) => {
+    try {
+      const request = new Request(requestParams);
+      const headers = {};
+      let status = 0;
+      let statusText = '';
+      let bodyUsed = false;
+      let redirected = options && options.redirected ? options.redirected : false;
+        request.callback = function(message, value, etc) {
+          switch(message) {
           case 1:
-            trace("Received time ", value, ".\n");
-            Time.set(value);
-            resolve(value);
+            // response status received with status code
+            status = parseInt(value);
+            statusText = statusTextArray[status];
             break;
-      
           case 2:
-            trace("Retrying.\n");
+            // one header received (name, value)
+            if (value && etc) headers[value.toLowerCase()] = etc;
             break;
-      
-          case -1:
-            trace("Failed: ", value, "\n");
-            if (hosts.length) {
-              hosts.shift();
-              resolve(setTime(hosts));
-            } else {
-              reject("setTime is failed.");
+          case 3:
+            // all headers received
+            break;
+          case 4:
+            // part of response body
+            break;
+          case 5:
+            // all body received
+            const body = value;
+
+            if (300 <= status && status <= 399 && headers['location']) {
+              if (redirect === 'follow') {
+                const redirectUrl = new URL(headers['location']);
+                const redirectOptions = options || {};
+                redirectOptions.redirected = true;
+                resolve(fetch(redirectUrl.hostname ? headers['location'] : `${url.origin}${headers['location']}`, redirectOptions));
+                return;
+              } else if (redirect === 'error') {
+                reject(new TypeError('NetworkError when attempting to fetch resource.'));
+                return;
+              }
             }
+            resolve(new Response({
+              href,
+              bodyUsed,
+              redirected,
+              status,
+              statusText,
+              headers,
+              body
+            }));
             break;
-        }
-      });
-    });
-  }
-  return (url.protocol === 'https:' ? setTime(["0.pool.ntp.org", "1.pool.ntp.org", "2.pool.ntp.org", "3.pool.ntp.org"]) : Promise.resolve()).then(() => {
-    return fetchMain(requestParams);
+          case -2:
+            reject('SSL: certificate: auth err');
+            break;
+          default:
+            reject(value);
+          }
+      }
+    } catch (e) {
+      reject(e);
+    }
   });
 }
 

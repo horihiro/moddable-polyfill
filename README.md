@@ -77,6 +77,11 @@ fetch('https://example.com')
 .catch(err => trace(err));
 ```
 
+Note: You need to set SNTP server in order to set current time for date validation, if you want to access HTTPS site.
+```sh
+mcconfig -d -m -p esp sntp=pool.ntp.org ssid=foo password=bar
+```
+
 ## Timer
 ### setInterval
 
