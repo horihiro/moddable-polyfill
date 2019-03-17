@@ -1,0 +1,14 @@
+{
+  "config": {
+    "sntp": "pool.ntp.org",
+  },
+  "include": [
+    "../../esp/console/manifest_console.json",
+    "../../all/timer/manifest_timer.json",
+  ],
+  "modules": {
+    "*": [
+      "./main",
+    ],
+  },
+}

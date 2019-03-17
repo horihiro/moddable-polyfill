@@ -4,7 +4,13 @@
   ],
   "modules": {
     "*": [
+      "./clearInterval",
+      "./clearImmediate",
+      "./clearTimeout",
+      "./setImmediate",
       "./setInterval",
+      "./setTimeout",
+      "./w3c_timer"
     ],
   },
 }
