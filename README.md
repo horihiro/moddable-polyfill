@@ -1,6 +1,20 @@
 # moddable-polyfill
 polyfill libraries for [Moddable SDK](https://github.com/Moddable-OpenSource/moddable)
 
+manifest.json to use polyfills
+```json
+{
+  "include": [
+      "path/to/manifest_polyfill_esp.json",
+  ],
+}
+```
+
+example.js
+```js
+import {} from 'polyfill';
+```
+
 ## net
 ### WHATWG URL
 
@@ -17,7 +31,6 @@ manifest.json to use `URL`
     ]
   },
 }
-
 ```
 
 example.js

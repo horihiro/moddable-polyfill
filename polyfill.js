@@ -1,5 +1,3 @@
 import {} from 'console';
-import {} from 'setInterval';
+import {} from 'w3c_timer';
 import {} from 'fetch';
-
-export default {};
