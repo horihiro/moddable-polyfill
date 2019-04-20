@@ -10,8 +10,6 @@
   "modules": {
     "*": [
       "./main",
-      "../../all/net/fetch",
-      "../../all/net/URL",
     ],
   },
 }
