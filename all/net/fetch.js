@@ -129,7 +129,11 @@ function fetch(href, options) {
   };
   if (options) {
     requestParams.method = options.method ? options.method.toUpperCase() : 'GET';
-    requestParams.headers = options.headers;
+    requestParams.headers = [];
+    Object.keys(options.headers).forEach((key) => {
+      requestParams.headers.push(key);
+      requestParams.headers.push(options.headers[key]);
+    })
     requestParams.body = options.body;
   }
   const redirect = ((opt) => {
