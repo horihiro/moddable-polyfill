@@ -1,6 +1,7 @@
 import {Request} from "http"
 import SecureSocket from "securesocket";
 import {URL} from 'URL';
+import config from 'mc/config';
 
 class Response {
   constructor(params) {
@@ -141,6 +142,7 @@ function fetch(href, options) {
     requestParams.port = parseInt(url.port) || 443,
     requestParams.Socket = SecureSocket;
     requestParams.secure = {protocolVersion: 0x303};
+    if (config.sslVerify && config.sslVerify.toLowerCase() === 'false') requestParams.secure.verify = false;
   }
   return new Promise((resolve, reject) => {
     try {
