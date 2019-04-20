@@ -3,7 +3,9 @@ debugger;
 import {} from 'fetch';
 
 Promise.resolve().then(() => {
-  return fetch('https://httpbin.org/status/302', {redirect: 'manual'});
+  return fetch('https://httpbin.org/post', {method: 'POST', redirect: 'manual', body: JSON.stringify({
+    key: "value"
+  })});
 })
 .then((r) => {
   trace(`${r.url}\n`);

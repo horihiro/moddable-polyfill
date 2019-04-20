@@ -3,6 +3,19 @@ import SecureSocket from "securesocket";
 import {URL} from 'URL';
 import config from 'mc/config';
 
+const buffer2String = (buf) => {
+  return String.fromCharCode.apply("", new Uint8Array(buf))
+}
+
+const largeBuffer2String = (buf) => {
+  var tmp = [];
+  var len = 128;
+  for (var p = 0; p < buf.byteLength; p += len) {
+    tmp.push(buffer2String(buf.slice(p, p + len)));
+  }
+  return tmp.join("");
+}
+
 class Response {
   constructor(params) {
     this.params = params;
@@ -57,8 +70,7 @@ class Response {
   json() {
     return new Promise((resolve, reject) => {
       try {
-        const json = JSON.parse(String.fromCharCode.apply(null, new Uint8Array(this.params.body)));
-        resolve(json);
+        resolve(JSON.parse(largeBuffer2String(this.params.body)));
       } catch (e) {
         reject(e);
       }
@@ -67,7 +79,7 @@ class Response {
   text() {
     return new Promise((resolve, reject) => {
       try {
-        resolve(String.fromCharCode.apply(null, new Uint8Array(this.params.body)));
+        resolve(largeBuffer2String(this.params.body));
       } catch (e) {
         reject(e);
       }
@@ -130,7 +142,7 @@ function fetch(href, options) {
   if (options) {
     requestParams.method = options.method ? options.method.toUpperCase() : 'GET';
     requestParams.headers = [];
-    Object.keys(options.headers).forEach((key) => {
+    options.headers && Object.keys(options.headers).forEach((key) => {
       requestParams.headers.push(key);
       requestParams.headers.push(options.headers[key]);
     })
