@@ -3,9 +3,8 @@ debugger;
 import {} from 'fetch';
 
 Promise.resolve().then(() => {
-  return fetch('https://httpbin.org/post', {method: 'POST', redirect: 'manual', body: JSON.stringify({
-    key: "value"
-  })});
+  return fetch('http://httpbin.org/get');
+  // return fetch('https://translate.google.com');
 })
 .then((r) => {
   trace(`${r.url}\n`);
