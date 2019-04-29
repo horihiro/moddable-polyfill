@@ -2,7 +2,8 @@
   "include": [
     "$(MODDABLE)/examples/manifest_base.json",
     "$(MODDABLE)/examples/manifest_net.json",
-    "$(MODDABLE)/modules/crypt/tls.json"
+    "$(MODDABLE)/modules/crypt/tls.json",
+    "../timer/manifest_timer.json",
   ],
   "modules": {
     "*": [
@@ -12,6 +13,6 @@
     ]
   },
   "preload": [
-    "http"
+    "http",
   ],
 }

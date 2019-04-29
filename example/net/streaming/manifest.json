@@ -1,0 +1,24 @@
+{
+  "include": [
+    "../../../all/net/manifest_net.json",
+  ],
+  "resources":{
+    "*": [
+      "$(MODULES)/crypt/data/ca23",
+    ]
+  },
+  "creation": {
+    "static": 131072,
+  },
+  "preload": [
+    "fetch",
+    "URL",
+    "setTimeout",
+    "http",
+  ],
+  "modules": {
+    "*": [
+      "./main",
+    ],
+  },
+}
