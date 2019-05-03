@@ -16,6 +16,7 @@ const largeBuffer2String = (buf) => {
 }
 
 Promise.resolve().then(() => {
+  trace(`${new Date()}: start\n`);
   return fetch('https://translate.google.com');
 })
 .then((res) => {
@@ -37,6 +38,9 @@ Promise.resolve().then(() => {
       if (tkk) {
         tkk = tkk[1];
         trace(`${new Date()}: ${tkk}\n`);
+        return reader.closed().then(() => {
+          return tkk;
+        });
       }
     }
 
@@ -57,5 +61,5 @@ Promise.resolve().then(() => {
   trace(e)
 })
 .then(() => {
-  fetchStreaming();    
+  // fetchStreaming();
 });

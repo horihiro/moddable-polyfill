@@ -8,7 +8,7 @@
     ]
   },
   "creation": {
-    "static": 131072,
+    "static": 98304,
   },
   "preload": [
     "fetch",
