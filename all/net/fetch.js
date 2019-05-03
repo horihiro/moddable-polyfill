@@ -147,39 +147,28 @@ class Response {
   arrayBuffer() {
     return new Promise((resolve, reject) => {
       try {
-        resolve(this.params.body);
-      } catch (e) {
-        reject(e);
-      }
-    });
-  }
-  json() {
-    return new Promise((resolve, reject) => {
-      try {
-        const buffer = this.params.body._readableStreamDefaultReader._bodyArray.filter(b => !!b);
-        const length = buffer.reduce((prev, curr) => {
-          return prev + curr.byteLength;
-        }, 0);
-        const whole = new Uint8Array(length);
-        let pos = 0;
-        buffer.forEach((buf) => {
-          whole.set(new Uint8Array(buf), pos);
-          pos += buf.byteLength;
-        });
-        resolve(JSON.parse(largeBuffer2String(whole)));
+        resolve(this.params.body._readableStreamDefaultReader._bodyArray.filter(b => !!b));
       } catch (e) {
         reject(e);
       }
     });
   }
   text() {
-    return new Promise((resolve, reject) => {
-      try {
-        resolve(largeBuffer2String(this.params.body));
-      } catch (e) {
-        reject(e);
-      }
+    return this.arrayBuffer().then((buffer) => {
+      const length = buffer.reduce((prev, curr) => {
+        return prev + curr.byteLength;
+      }, 0);
+      const whole = new Uint8Array(length);
+      let pos = 0;
+      buffer.forEach((buf) => {
+        whole.set(new Uint8Array(buf), pos);
+        pos += buf.byteLength;
+      });
+      return largeBuffer2String(whole);
     });
+  }
+  json() {
+    return this.text().then(t => JSON.parse(t));
   }
 }
 
@@ -267,8 +256,9 @@ function fetch(href, options) {
       let readableStreamDefaultReader = null;
       let body = null;
       let response = null;
-let count = 0;
+
       request.callback = function(message, value, etc) {
+        if (request.state > 5) return;
         switch(message) {
         case 1:
           // response status received with status code
@@ -281,6 +271,18 @@ let count = 0;
           break;
         case 3:
           // all headers received
+          if (300 <= status && status <= 399 && headers.get('location')) {
+            if (redirect === 'follow') {
+              const redirectUrl = new URL(headers.get('location'));
+              const redirectOptions = options || {};
+              redirectOptions.redirected = true;
+              resolve(fetch(redirectUrl.hostname ? headers.get('location') : `${url.origin}${headers.get('location')}`, redirectOptions));
+              return;
+            } else if (redirect === 'error') {
+              reject(new TypeError('NetworkError when attempting to fetch resource.'));
+              return;
+            }
+          }
           readableStreamDefaultReader = new ReadableStreamDefaultReader({request});
           body = new ReadableStream({readableStreamDefaultReader});
           response = new Response({
@@ -292,32 +294,16 @@ let count = 0;
             headers,
             body
           });
-         resolve(response);
+          resolve(response);
           break;
         case 4:
           // part of response body
           const buffer = request.read(ArrayBuffer);
-
-          readableStreamDefaultReader._bodyArray.push(buffer);
+          readableStreamDefaultReader && readableStreamDefaultReader._bodyArray.push(buffer);
           break;
         case 5:
-          readableStreamDefaultReader._bodyArray.push(value);
-
           // all body received
-          // const body = value;
-
-          if (300 <= status && status <= 399 && headers['location']) {
-            if (redirect === 'follow') {
-              const redirectUrl = new URL(headers['location']);
-              const redirectOptions = options || {};
-              redirectOptions.redirected = true;
-              resolve(fetch(redirectUrl.hostname ? headers['location'] : `${url.origin}${headers['location']}`, redirectOptions));
-              return;
-            } else if (redirect === 'error') {
-              reject(new TypeError('NetworkError when attempting to fetch resource.'));
-              return;
-            }
-          }
+          readableStreamDefaultReader && readableStreamDefaultReader._bodyArray.push(value);
           break;
         case -2:
           reject('SSL: certificate: auth err');
