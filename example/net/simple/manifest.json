@@ -1,6 +1,6 @@
 {
   "include": [
-    "../../all/net/manifest_net.json",
+    "../../../all/net/manifest_net.json",
   ],
   "resources":{
     "*": [
